@@ -1,0 +1,71 @@
+{% include 'header.html' %}
+<div class="container overflow-hidden">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="box_0" id="heading">
+        <h1>{{ list_title[0] }}, {{list_title[1] }}</h1>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="box" id="todo_input">
+        <form class="item" method="post" action="/add">
+          <input type="text" name="userInput" placeholder="Next 'to do' task" required autofocus>
+          <button type="submit">+</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+      <div class="col-lg-4 todo">
+        <h1> 'To Do' List</h1>
+        {% if lista != [] %}
+          {% for item in lista: %}
+            {% if item.doing_item == None and item.done_item == None: %}
+              <form action = "/doing/{{item.id}}" method = "post" >
+                 <div class ="item todo_items">
+                   <input type = "checkbox" onChange = "this.form.submit()" name = "checkbox" />
+                   <p > {{item.todo_item}} </p>
+                </div>
+              </form>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="col-lg-4 doing">
+        <h1> 'On it!' List</h1>
+        {% if lista != [] %}
+          {% for item in lista: %}
+            {% if item.todo_item == None and item.done_item == None: %}
+              <form action = "/done/{{item.id}}" method = "post" >
+                 <div class ="item doing_items">
+                   <input type = "checkbox" onChange = "this.form.submit()" name = "checkbox" />
+                   <p > {{item.doing_item}} </p>
+                </div>
+              </form>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+        </div>
+        <div class="col-lg-4 done">
+          <h1> 'Done!' List</h1>
+          {% if lista != [] %}
+            {% for item in lista: %}
+              {% if item.todo_item == None and item.doing_item == None: %}
+                <div class ="item done_items">
+                  <div class="col-lg-9">
+                    <p> {{item.done_item}}</p>
+                  </div>
+                  <div class="col-lg-3">
+                    <a href="{{ url_for('delete', item_id=item.id) }}" class="btn btn-primary">Delete</a>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </div>
+  </div>
+
+
+</div>
+
+</body>
